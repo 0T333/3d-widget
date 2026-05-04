@@ -15,32 +15,31 @@ import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 
-// ===== SCENE =====
+// SCENE
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x222222);
 
-// ===== CAMERA =====
+// CAMERA
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 10000);
 camera.position.set(3,3,3);
 
-// ===== RENDERER =====
+// RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 document.body.appendChild(renderer.domElement);
 
-// ===== CONTROLS =====
+// CONTROL (⚠️ KHÔNG dùng THREE.OrbitControls)
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-// ===== LIGHT =====
+// LIGHT
 scene.add(new THREE.AmbientLight(0xffffff, 1.5));
-
 const light = new THREE.DirectionalLight(0xffffff, 2);
 light.position.set(5,10,5);
 scene.add(light);
 
-// ===== TEST CUBE (đảm bảo luôn thấy) =====
+// TEST CUBE (đảm bảo luôn thấy)
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(),
   new THREE.MeshBasicMaterial({ color: 0xff0000 })
@@ -48,36 +47,32 @@ const cube = new THREE.Mesh(
 cube.position.x = -2;
 scene.add(cube);
 
-// ===== LOAD MODEL =====
+// LOAD GLB
 const loader = new GLTFLoader();
 
-loader.load(
-  "./gal-b-lantern-4120.glb",
-  (gltf) => {
+loader.load("./gal-b-lantern-4120.glb", (gltf) => {
 
-    const model = gltf.scene;
+  const model = gltf.scene;
 
-    // auto fit
-    const box = new THREE.Box3().setFromObject(model);
-    const size = box.getSize(new THREE.Vector3()).length();
-    const center = box.getCenter(new THREE.Vector3());
+  // auto fit
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3()).length();
+  const center = box.getCenter(new THREE.Vector3());
 
-    const scale = 2 / size;
-    model.scale.set(scale, scale, scale);
-    model.position.sub(center.multiplyScalar(scale));
+  const scale = 2 / size;
+  model.scale.set(scale, scale, scale);
+  model.position.sub(center.multiplyScalar(scale));
 
-    scene.add(model);
+  scene.add(model);
 
-    controls.target.set(0,0,0);
-    controls.update();
+  controls.target.set(0,0,0);
+  controls.update();
 
-    console.log("✅ MODEL LOADED");
-  },
-  undefined,
-  (err) => console.error("❌ LOAD ERROR", err)
-);
+  console.log("MODEL LOADED");
 
-// ===== LOOP =====
+});
+
+// LOOP
 function animate() {
   requestAnimationFrame(animate);
 
@@ -88,7 +83,7 @@ function animate() {
 }
 animate();
 
-// ===== RESIZE =====
+// RESIZE
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
