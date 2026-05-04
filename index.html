@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>3D Demo</title>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { display: block; }
-  </style>
-</head>
-<body>
-
 <script type="module">
-  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-  import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+  import * as THREE from 'https://cdn.skypack.dev/three@0.160.0';
+  import { OrbitControls } from 'https://cdn.skypack.dev/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 
   const scene = new THREE.Scene();
 
@@ -51,6 +39,3 @@
 
   animate();
 </script>
-
-</body>
-</html>
